@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>FALLOUT 76 CONFIG EDITOR</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="background-container"><video autoplay muted loop id="bg-video">
+            <source src="intro.mp4" type="video/mp4">
+        </video>
+        <div class="bg-fallback"></div>
+    </div>
+    <div class="scanlines"></div>
+    <div class="app-wrapper">
+        <aside class="sidebar">
+            <div class="logo-container">
+                <h1>FALLOUT 76</h1>
+                <p style="color:white;font-size:14px;margin-top:5px">CONFIG EDITOR</p>
+            </div>
+            <div id="global-search-container" style="margin-bottom:20px;position:relative"><input type="text"
+                    id="global-search" placeholder="SEARCH SETTINGS..."
+                    style="width:100%;background:rgba(255,255,255,.05);border:1px solid var(--f76-border);color:white;padding:10px;font-family:var(--font-main);font-size:16px;outline:none">
+                <div id="search-results"
+                    style="display:none;position:absolute;top:100%;left:0;width:100%;background:#000;border:1px solid var(--f76-yellow);z-index:1000;max-height:300px;overflow-y:auto">
+                </div>
+            </div>
+            <nav id="sidebar-nav">
+                <div class="nav-tab active" data-tab="general">GENERAL</div>
+                <div class="nav-tab" data-tab="display">DISPLAY</div>
+                <div class="nav-tab" data-tab="performance">PERFORMANCE</div>
+                <div class="nav-tab" data-tab="controls">CONTROLS</div>
+                <div class="nav-tab" data-tab="audio">AUDIO</div>
+                <div class="nav-tab" data-tab="gameplay">GAMEPLAY</div>
+                <div class="nav-tab" data-tab="visuals">VISUALS</div>
+                <div class="nav-tab" data-tab="advanced">ADVANCED</div>
+                <div class="nav-tab" data-tab="database">DATABASE</div>
+                <div class="nav-tab" data-tab="experimental" style="color:#ff4444">EXPERIMENTAL</div>
+                <div class="nav-tab" data-tab="presets">PRESETS</div>
+                <div class="nav-tab" data-tab="ini">INI OUTPUT</div>
+            </nav>
+        </aside>
+        <main class="content-area" id="main-content">
+            <section class="config-section active" id="general">
+                <div class="config-grid">
+                    <div class="toggle-item"><span>SKIP INTRO VIDEOS</span><input type="checkbox" id="skip-intro"
+                            class="mini-toggle" checked><label for="skip-intro" class="mini-toggle-label" data-on="ON"
+                            data-off="OFF"></label></div>
+                    <div class="toggle-item"><span>BACKGROUND RENDERING (ALT-TAB)</span><input type="checkbox"
+                            id="pause-on-alt-tab" class="mini-toggle"><label for="pause-on-alt-tab"
+                            class="mini-toggle-label" data-on="KEEP" data-off="PAUSE"></label></div>
+                    <div class="toggle-item"><span>DISABLE ALL GORE</span><input type="checkbox" id="disable-gore"
+                            class="mini-toggle"><label for="disable-gore" class="mini-toggle-label" data-on="YES"
+                            data-off="NO"></label></div>
+                    <div class="toggle-item"><span>DISABLE STARTUP SPLASH</span><input type="checkbox"
+                            id="disable-splash" class="mini-toggle" checked><label for="disable-splash"
+                            class="mini-toggle-label" data-on="ON" data-off="OFF"></label></div>
+                    <div class="toggle-item"><span>DIALOGUE CAMERA</span><input type="checkbox" id="dialogue-cam"
+                            class="mini-toggle" checked><label for="dialogue-cam" class="mini-toggle-label" data-on="ON"
+                            data-off="OFF"></label></div>
+                    <div class="toggle-item"><span>SHOW COMPASS</span><input type="checkbox" id="compass"
+                            class="mini-toggle" checked><label for="compass" class="mini-toggle-label" data-on="ON"
+                            data-off="OFF"></label></div>
+                    <div class="toggle-item"><span>QUEST MARKERS</span><input type="checkbox" id="quest-markers"
+                            class="mini-toggle" checked><label for="quest-markers" class="mini-toggle-label"
+                            data-on="ON" data-off="OFF"></label></div>
+                    <div class="config-group" style="padding:10px 25px;border-bottom:1px solid rgba(255,255,255,.03)">
+                        <div class="config-item" style="padding-left:0;padding-right:0;border:none"><label
+                                for="pipboy-color">PIP-BOY COLOR THEME</label>
+                            <div style="display:flex;align-items:center;gap:20px">
+                                <div id="pipboy-preview" class="color-preview" title="Pip-Boy Color Preview"></div>
+                                <select id="pipboy-color">
+                                    <option value="green" selected>GREEN (DEFAULT)</option>
+                                    <option value="amber">AMBER (FALLOUT NV)</option>
+                                    <option value="white">WHITE (TACTICAL)</option>
+                                    <option value="custom">CUSTOM RGB</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div id="pipboy-custom-sliders" style="display:none;margin-top:10px">
+                            <div class="config-item" style="padding:5px 0;border:none"><label
+                                    style="font-size:16px;color:#ff4444">RED</label>
+                                <div class="slider-container"><input type="range" id="pipboy-r" min="0" max="1"
+                                        step=".01" value=".05"><span class="slider-value">0.05</span></div>
+                            </div>
+                            <div class="config-item" style="padding:5px 0;border:none"><label
+                                    style="font-size:16px;color:#44ff44">GREEN</label>
+                                <div class="slider-container"><input type="range" id="pipboy-g" min="0" max="1"
+                                        step=".01" value="1"><span class="slider-value">1.00</span></div>
+                            </div>
+                            <div class="config-item" style="padding:5px 0;border:none"><label
+                                    style="font-size:16px;color:#4444ff">BLUE</label>
+                                <div class="slider-container"><input type="range" id="pipboy-b" min="0" max="1"
+                                        step=".01" value=".1"><span class="slider-value">0.10</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="config-item"><label for="pipboy-scale">PIP-BOY SCALE</label>
+                        <div class="slider-container"><input type="range" id="pipboy-scale" min=".5" max="1.5"
+                                step=".05" value="1"><span class="slider-value">1.0</span></div>
+                    </div>
+                    <div class="toggle-item"><span>INSTANT PIP-BOY</span><input type="checkbox" id="instant-pipboy"
+                            class="mini-toggle"><label for="instant-pipboy" class="mini-toggle-label" data-on="ON"
+                            data-off="OFF"></label></div>
+                    <div class="toggle-item"><span>INSTANT TERMINAL (ANIMATION)</span><input type="checkbox"
+                            id="instant-terminal" class="mini-toggle"><label for="instant-terminal"
+                            class="mini-toggle-label" data-on="ON" data-off="OFF"></label></div>
+                    <div class="config-item"><label for="terminal-speed">TERMINAL TEXT SPEED</label>
+                        <div class="slider-container"><input type="range" id="terminal-speed" min="20" max="2000"
+                                step="50" value="20"><span class="slider-value">NORMAL</span></div>
+                    </div>
+                </div>
+            </section>
+            <section class="config-section" id="display">
+                <div class="config-grid">
+                    <div class="config-item"><label for="window-mode">WINDOW MODE</label><select id="window-mode">
+                            <option value="fullscreen">FULLSCREEN</option>
+                            <option value="borderless" selected>BORDERLESS</option>
+                            <option value="windowed">WINDOWED</option>
+                        </select></div>
+                    <div class="config-item"><label for="resolution">RESOLUTION</label><select id="resolution">
+                            <option value="1920x1080">1920 X 1080</option>
+                            <option value="2560x1440" selected>2560 X 1440 (2K)</option>
+                            <option value="3840x2160">3840 X 2160 (4K)</option>
+                        </select></div>
+                    <div class="config-item"><label for="fov-fp">FIELD OF VIEW (1ST PERSON)</label>
+                        <div class="slider-container"><input type="range" id="fov-fp" min="70" max="140" step="1"
+                                value="90"><span class="slider-value">90</span></div>
+                    </div>
+                    <div class="config-item"><label for="fov-tp">FIELD OF VIEW (3RD PERSON)</label>
+                        <div class="slider-container"><input type="range" id="fov-tp" min="70" max="140" step="1"
+                                value="80"><span class="slider-value">80</span></div>
+                    </div>
+                    <div class="config-item"><label for="antialiasing">ANTI-ALIASING</label><select id="antialiasing">
+                            <option value="TAA" selected>TAA (HIGH)</option>
+                            <option value="FXAA">FXAA (PERFORMANCE)</option>
+                            <option value="0">OFF</option>
+                        </select></div>
+                    <div class="config-item"><label for="safe-zone-x">WEAPON VIEWMODEL OFFSET (X)</label>
+                        <div class="slider-container"><input type="range" id="safe-zone-x" min="0" max="100" step="1"
+                                value="15"><span class="slider-value">15</span></div>
+                    </div>
+                    <div class="config-item"><label for="safe-zone-y">WEAPON VIEWMODEL OFFSET (Y)</label>
+                        <div class="slider-container"><input type="range" id="safe-zone-y" min="0" max="100" step="1"
+                                value="15"><span class="slider-value">15</span></div>
+                    </div>
+                </div>
+            </section>
+            <section class="config-section" id="performance">
+                <div class="config-grid">
+                    <div class="config-item"><label for="fps-limit">FRAMERATE LIMIT (VSYNC)</label><select
+                            id="fps-limit">
+                            <option value="default" selected>DEFAULT (60 FPS)</option>
+                            <option value="unlocked">UNLOCKED (UNCAPPED)</option>
+                        </select></div>
+                    <div class="config-item"><label for="shadow-res">SHADOW RESOLUTION</label><select id="shadow-res">
+                            <option value="512">512 (PERFORMANCE)</option>
+                            <option value="1024" selected>1024 (BALANCED)</option>
+                            <option value="2048">2048 (QUALITY)</option>
+                        </select></div>
+                    <div class="config-item"><label for="anisotropy">ANISOTROPIC FILTERING</label><select
+                            id="anisotropy">
+                            <option value="1">OFF</option>
+                            <option value="4">4X</option>
+                            <option value="8">8X</option>
+                            <option value="16" selected>16X (HIGH)</option>
+                        </select></div>
+                    <div class="config-item"><label for="shadow-dist">SHADOW DISTANCE</label>
+                        <div class="slider-container"><input type="range" id="shadow-dist" min="5000" max="120000"
+                                step="5000" value="30000"><span class="slider-value">30000</span></div>
+                    </div>
+                    <div class="config-item"><label for="grass-dist">GRASS DISTANCE</label>
+                        <div class="slider-container"><input type="range" id="grass-dist" min="0" max="14000" step="500"
+                                value="3000"><span class="slider-value">3000</span></div>
+                    </div>
+                    <div class="config-item"><label for="grass-density">GRASS DENSITY (LOWER = MORE)</label>
+                        <div class="slider-container"><input type="range" id="grass-density" min="10" max="60" step="5"
+                                value="20"><span class="slider-value">20</span></div>
+                    </div>
+                    <div class="toggle-item"><span>COMPUTE SHADER LIGHTING</span><input type="checkbox"
+                            id="compute-shader-lighting" class="mini-toggle" checked><label
+                            for="compute-shader-lighting" class="mini-toggle-label" data-on="ON" data-off="OFF"></label>
+                    </div>
+                </div>
+            </section>
+            <section class="config-section" id="controls">
+                <div class="config-grid">
+                    <div class="config-group"
+                        style="padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,.05);margin-bottom:10px">
+                        <h4 style="color:var(--f76-yellow);margin-bottom:10px;font-size:16px">KEYBOARD & MOUSE</h4>
+                        <div class="toggle-item"><span>TOGGLE SPRINT</span><input type="checkbox" id="toggle-sprint"
+                                class="mini-toggle" checked><label for="toggle-sprint" class="mini-toggle-label"
+                                data-on="ON" data-off="OFF"></label></div>
+                        <div class="toggle-item"><span>TOGGLE CROUCH</span><input type="checkbox" id="toggle-crouch"
+                                class="mini-toggle" checked><label for="toggle-crouch" class="mini-toggle-label"
+                                data-on="ON" data-off="OFF"></label></div>
+                        <div class="config-item"><label for="mouse-sens">MOUSE SENSITIVITY</label>
+                            <div class="slider-container"><input type="range" id="mouse-sens" min=".001" max=".1"
+                                    step=".001" value=".03"><span class="slider-value">0.030</span></div>
+                        </div>
+                        <div class="config-item"><label for="ads-sens">ADS SENSITIVITY MULTIPLIER</label>
+                            <div class="slider-container"><input type="range" id="ads-sens" min=".1" max="2" step=".1"
+                                    value="1"><span class="slider-value">1.0</span></div>
+                        </div>
+                        <div class="toggle-item"><span>RAW INPUT (NO SMOOTHING)</span><input type="checkbox"
+                                id="mouse-smoothing" class="mini-toggle" checked><label for="mouse-smoothing"
+                                class="mini-toggle-label" data-on="ON" data-off="OFF"></label></div>
+                        <div class="toggle-item"><span>MOUSE ACCELERATION</span><input type="checkbox" id="mouse-accel"
+                                class="mini-toggle"><label for="mouse-accel" class="mini-toggle-label" data-on="ON"
+                                data-off="OFF"></label></div>
+                        <div class="toggle-item"><span>INVERT Y-AXIS</span><input type="checkbox" id="invert-y"
+                                class="mini-toggle"><label for="invert-y" class="mini-toggle-label" data-on="ON"
+                                data-off="OFF"></label></div>
+                    </div>
+                    <div class="config-group">
+                        <h4 style="color:var(--f76-yellow);margin-bottom:10px;font-size:16px">GAMEPAD</h4>
+                        <div class="toggle-item"><span>ENABLE GAMEPAD</span><input type="checkbox" id="gamepad-enable"
+                                class="mini-toggle" checked><label for="gamepad-enable" class="mini-toggle-label"
+                                data-on="ON" data-off="OFF"></label></div>
+                        <div class="toggle-item"><span>VIBRATION / RUMBLE</span><input type="checkbox" id="rumble"
+                                class="mini-toggle" checked><label for="rumble" class="mini-toggle-label" data-on="ON"
+                                data-off="OFF"></label></div>
+                        <div class="config-item"><label for="gamepad-sens">GAMEPAD SENSITIVITY</label>
+                            <div class="slider-container"><input type="range" id="gamepad-sens" min=".1" max="2"
+                                    step=".1" value="1"><span class="slider-value">1.0</span></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="config-group"
+                    style="margin-top:20px;border-top:1px solid rgba(255,255,255,.1);padding-top:15px">
+                    <h3 style="color:var(--f76-yellow);margin-bottom:15px">KEY BINDINGS (ControlMap_Custom.txt)</h3>
+                    <p style="font-size:12px;color:#aaa;margin-bottom:15px">NOTE: Modify with caution. Incorrect values
+                        may break controls. Click a Key code to edit.</p>
+                    <p style="font-size:14px;margin-top:5px">Click a hex code to rebind. Use 'Fix Movement' if W/A/S/D
+                        stops working.</p><button id="reset-controls-btn"
+                        style="margin-top:10px;background:transparent;border:1px solid #ff4444;color:#ff4444;padding:5px 15px;cursor:pointer;font-weight:700;font-family:var(--font-main);font-size:14px">⚠
+                        FIX MOVEMENT / RESET CONTROLS</button>
+                    <div id="keybinds-container"
+                        style="max-height:400px;overflow-y:auto;background:rgba(0,0,0,.3);padding:10px;border:1px solid rgba(255,255,255,.1);margin-top:10px">
+                        <table style="width:100%;border-collapse:collapse;font-family:Rajdhani,sans-serif">
+                            <thead style="background:rgba(255,255,255,.05);text-align:left">
+                                <tr>
+                                    <th style="padding:10px">ACTION</th>
+                                    <th style="padding:10px">KEY</th>
+                                    <th style="padding:10px">GAMEPAD / MOUSE</th>
+                                </tr>
+                            </thead>
+                            <tbody id="keybinds-list">
+                                <tr>
+                                    <td colspan="4" style="text-align:center;padding:20px">Loading ControlMap...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+            <section class="config-section" id="audio">
+                <div class="config-grid">
+                    <div class="config-item"><label for="master-vol">MASTER VOLUME</label>
+                        <div class="slider-container"><input type="range" id="master-vol" min="0" max="1" step=".05"
+                                value="1"><span class="slider-value">100%</span></div>
+                    </div>
+                    <div class="config-item"><label for="music-vol">MUSIC VOLUME</label>
+                        <div class="slider-container"><input type="range" id="music-vol" min="0" max="1" step=".05"
+                                value=".5"><span class="slider-value">50%</span></div>
+                    </div>
+                    <div class="config-item"><label for="radio-vol">RADIO VOLUME</label>
+                        <div class="slider-container"><input type="range" id="radio-vol" min="0" max="1" step=".05"
+                                value=".5"><span class="slider-value">50%</span></div>
+                    </div>
+                    <div class="config-item"><label for="voice-chat-mode">VOICE CHAT MODE</label><select
+                            id="voice-chat-mode">
+                            <option value="0">AUTO</option>
+                            <option value="1">AREA</option>
+                            <option value="2">TEAM</option>
+                            <option value="3">NONE</option>
+                        </select></div>
+                    <div class="toggle-item"><span>PUSH TO TALK</span><input type="checkbox" id="push-to-talk"
+                            class="mini-toggle" checked><label for="push-to-talk" class="mini-toggle-label" data-on="ON"
+                            data-off="OFF"></label></div>
+                    <div class="toggle-item"><span>MAIN MENU MUSIC</span><input type="checkbox" id="main-menu-music"
+                            class="mini-toggle" checked><label for="main-menu-music" class="mini-toggle-label"
+                            data-on="ON" data-off="OFF"></label></div>
+                </div>
+            </section>
+            <section class="config-section" id="gameplay">
+                <div class="config-grid">
+                    <div class="toggle-item"><span>ALWAYS RUN BY DEFAULT</span><input type="checkbox" id="always-run"
+                            class="mini-toggle" checked><label for="always-run" class="mini-toggle-label" data-on="ON"
+                            data-off="OFF"></label></div>
+                    <div class="toggle-item"><span>PACIFIST MODE</span><input type="checkbox" id="pacifist-mode"
+                            class="mini-toggle" checked><label for="pacifist-mode" class="mini-toggle-label"
+                            data-on="ON" data-off="OFF"></label></div>
+                    <div class="toggle-item"><span>SHOW DAMAGE NUMBERS</span><input type="checkbox" id="damage-numbers"
+                            class="mini-toggle"><label for="damage-numbers" class="mini-toggle-label" data-on="ON"
+                            data-off="OFF"></label></div>
+                    <div class="config-item"><label for="autosave-count">AUTOSAVE SLOTS</label>
+                        <div class="slider-container"><input type="range" id="autosave-count" min="1" max="50" step="1"
+                                value="10"><span class="slider-value">10</span></div>
+                    </div>
+                    <div class="toggle-item"><span>POWER ARMOR HUD</span><input type="checkbox" id="pa-hud"
+                            class="mini-toggle" checked><label for="pa-hud" class="mini-toggle-label" data-on="ON"
+                            data-off="OFF"></label></div>
+                    <div class="toggle-item"><span>BACKPACK VISIBLE</span><input type="checkbox" id="backpack-visible"
+                            class="mini-toggle" checked><label for="backpack-visible" class="mini-toggle-label"
+                            data-on="ON" data-off="OFF"></label></div>
+                    <div class="toggle-item"><span>TOGGLE AIM</span><input type="checkbox" id="toggle-aim"
+                            class="mini-toggle"><label for="toggle-aim" class="mini-toggle-label" data-on="ON"
+                            data-off="OFF"></label></div>
+                    <div class="toggle-item"><span>CROSSHAIR ENABLED</span><input type="checkbox" id="crosshair-enabled"
+                            class="mini-toggle" checked><label for="crosshair-enabled" class="mini-toggle-label"
+                            data-on="ON" data-off="OFF"></label></div>
+                    <div class="toggle-item"><span>SUBTITLES</span><input type="checkbox" id="subtitles"
+                            class="mini-toggle" checked><label for="subtitles" class="mini-toggle-label" data-on="ON"
+                            data-off="OFF"></label></div>
+                    <div class="toggle-item"><span>QUICK MAP (M KEY)</span><input type="checkbox" id="quick-map"
+                            class="mini-toggle"><label for="quick-map" class="mini-toggle-label" data-on="ON"
+                            data-off="OFF"></label></div>
+                    <div class="config-item"><label for="loading-fade">LOADING SCREEN FADE IN</label>
+                        <div class="slider-container"><input type="range" id="loading-fade" min=".1" max="5" step=".1"
+                                value="1"><span class="slider-value">1.0s</span></div>
+                    </div>
+                </div>
+            </section>
+            <section class="config-section" id="visuals">
+                <div class="config-grid">
+                    <div class="toggle-item"><span>WATER REFLECTIONS</span><input type="checkbox" id="water-reflections"
+                            class="mini-toggle" checked><label for="water-reflections" class="mini-toggle-label"
+                            data-on="ON" data-off="OFF"></label></div>
+                    <div class="toggle-item"><span>WATER REFRACTIONS</span><input type="checkbox" id="water-refractions"
+                            class="mini-toggle" checked><label for="water-refractions" class="mini-toggle-label"
+                            data-on="ON" data-off="OFF"></label></div>
+                    <div class="toggle-item"><span>WETNESS OCCLUSION</span><input type="checkbox" id="wetness-occlusion"
+                            class="mini-toggle" checked><label for="wetness-occlusion" class="mini-toggle-label"
+                            data-on="ON" data-off="OFF"></label></div>
+                    <div class="toggle-item"><span>SCREEN SPACE REFLECTIONS (SSR)</span><input type="checkbox" id="ssr"
+                            class="mini-toggle" checked><label for="ssr" class="mini-toggle-label" data-on="ON"
+                            data-off="OFF"></label></div>
+                    <div class="toggle-item"><span>DEPTH OF FIELD</span><input type="checkbox" id="dof"
+                            class="mini-toggle" checked><label for="dof" class="mini-toggle-label" data-on="ON"
+                            data-off="OFF"></label></div>
+                    <div class="toggle-item"><span>MOTION BLUR</span><input type="checkbox" id="mblur"
+                            class="mini-toggle" checked><label for="mblur" class="mini-toggle-label" data-on="ON"
+                            data-off="OFF"></label></div>
+                    <div class="toggle-item"><span>LENS FLARE</span><input type="checkbox" id="lens" class="mini-toggle"
+                            checked><label for="lens" class="mini-toggle-label" data-on="ON" data-off="OFF"></label>
+                    </div>
+                    <div class="toggle-item"><span>GODRAYS</span><input type="checkbox" id="godrays" class="mini-toggle"
+                            checked><label for="godrays" class="mini-toggle-label" data-on="ON" data-off="OFF"></label>
+                    </div>
+                    <div class="config-group"
+                        style="padding:10px 0;border-top:1px solid rgba(255,255,255,.05);margin-top:10px">
+                        <div style="display:flex;align-items:center;gap:15px;margin-bottom:10px">
+                            <h4 style="color:var(--f76-yellow);font-size:16px;margin:0">CROSSHAIR RGB</h4>
+                            <div id="crosshair-preview" class="color-preview" title="Crosshair Preview"
+                                style="width:20px;height:20px;border-radius:50%"></div>
+                        </div>
+                        <div class="config-item"><label for="crosshair-r">RED</label>
+                            <div class="slider-container"><input type="range" id="crosshair-r" min="0" max="255"
+                                    step="1" value="255"><span class="slider-value">255</span></div>
+                        </div>
+                        <div class="config-item"><label for="crosshair-g">GREEN</label>
+                            <div class="slider-container"><input type="range" id="crosshair-g" min="0" max="255"
+                                    step="1" value="255"><span class="slider-value">255</span></div>
+                        </div>
+                        <div class="config-item"><label for="crosshair-b">BLUE</label>
+                            <div class="slider-container"><input type="range" id="crosshair-b" min="0" max="255"
+                                    step="1" value="255"><span class="slider-value">255</span></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="config-section" id="advanced">
+                <div class="config-grid">
+                    <div class="config-item"><label for="lod-objects">OBJECT LOD DISTANCE</label>
+                        <div class="slider-container"><input type="range" id="lod-objects" min="1" max="15" step="1"
+                                value="5"><span class="slider-value">5</span></div>
+                    </div>
+                    <div class="config-item"><label for="lod-actors">ACTOR LOD DISTANCE</label>
+                        <div class="slider-container"><input type="range" id="lod-actors" min="1" max="15" step="1"
+                                value="5"><span class="slider-value">5</span></div>
+                    </div>
+                    <div class="config-item"><label for="lod-items">ITEM LOD DISTANCE</label>
+                        <div class="slider-container"><input type="range" id="lod-items" min="1" max="15" step="1"
+                                value="5"><span class="slider-value">5</span></div>
+                    </div>
+                    <div class="toggle-item"><span>RAIN OCCLUSION</span><input type="checkbox" id="rain-occlusion"
+                            class="mini-toggle" checked><label for="rain-occlusion" class="mini-toggle-label"
+                            data-on="ON" data-off="OFF"></label></div>
+                    <div class="toggle-item"
+                        style="background:rgba(255,68,68,.05);border:1px dashed rgba(255,68,68,.2);border-radius:4px;padding:10px">
+                        <span style="color:#f66;font-weight:700">[PROTECT] READ-ONLY FILES</span><input type="checkbox"
+                            id="read-only" class="mini-toggle" checked><label for="read-only" class="mini-toggle-label"
+                            data-on="ON" data-off="OFF"></label><button onclick="killGame()"
+                            style="margin-left:auto;background:#800;color:white;border:none;padding:4px 8px;cursor:pointer;font-family:Rajdhani;font-weight:700;font-size:11px;border-radius:2px">FORCE
+                            KILL GAME</button>
+                    </div>
+                    <div class="config-item"
+                        style="align-items:flex-start;margin-top:20px;border-top:1px solid rgba(255,255,255,.1);padding-top:20px">
+                        <div style="width:100%">
+                            <h4 style="color:var(--f76-yellow);margin-bottom:10px;font-size:16px">QUICK ADD VARIABLE
+                            </h4>
+                            <div style="display:flex;gap:10px;align-items:center;margin-bottom:10px"><input type="text"
+                                    id="quick-key" placeholder="e.g. bExampleSetting"
+                                    style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:white;padding:8px;font-family:Rajdhani;font-weight:700;flex-grow:1"><select
+                                    id="quick-bool" style="width:100px">
+                                    <option value="1">ON (1)</option>
+                                    <option value="0">OFF (0)</option>
+                                </select><button id="quick-add-btn" class="footer-btn"
+                                    style="background:var(--f76-yellow);color:#000;padding:5px 15px;font-size:14px;border-radius:2px">ADD</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="config-item" style="align-items:flex-start"><label for="custom-ini"
+                            style="margin-top:10px">CUSTOM INI LINES</label><textarea id="custom-ini" rows="8"
+                            style="width:100%;background:rgba(0,0,0,.5);border:1px solid var(--f76-border);color:var(--f76-text-normal);font-family:'Courier New';padding:10px;resize:vertical"
+                            placeholder="; Add any extra commands here&#10;[Section]&#10;bMyBoolean=1&#10;fMyFloat=0.5"></textarea>
+                    </div>
+                </div>
+            </section>
+
+            <section class="config-section" id="database">
+                <div class="db-content" style="display:flex;flex-direction:column;height:100%">
+                    <div id="minerva-timer"
+                        style="background:rgba(0,0,0,.3);padding:8px 15px;margin-bottom:15px;border-left:4px solid var(--f76-yellow);font-size:14px;font-weight:700;letter-spacing:1px">
+                        CALCULATING MINERVA STATUS...</div>
+                    <div
+                        style="display:flex;gap:30px;margin-bottom:20px;border-bottom:2px solid rgba(255,255,255,.1);padding-bottom:10px">
+                        <div class="db-tab active" data-dbtab="minerva">MINERVA</div>
+                        <div class="db-tab" data-dbtab="events">EVENTS</div>
+                        <div class="db-tab" data-dbtab="status">STATUS</div>
+                        <div class="db-tab" data-dbtab="advanced">ADVANCED</div>
+                        <div class="db-tab" data-dbtab="map">MAP</div>
+                    </div>
+                    <div style="display:flex;gap:20px;flex-grow:1;min-height:0">
+                        <div id="db-list-container" class="custom-scroll" style="flex:2;overflow-y:auto"></div>
+                        <div id="db-map-wrapper"
+                            style="display:none;flex:3;position:relative;border:1px solid var(--f76-yellow);overflow:hidden;background:#0a0a0a">
+                            <div id="db-map-sidebar"
+                                style="width:200px;height:100%;background:rgba(0,0,0,.8);border-right:1px solid rgba(255,255,255,.1);z-index:10;display:flex;flex-direction:column;overflow-y:auto"
+                                class="custom-scroll">
+                                <div style="padding:10px;border-bottom:1px solid rgba(255,255,255,.1)">
+                                    <h4 style="color:var(--f76-yellow);font-size:12px;margin-bottom:10px">QUICK JUMP
+                                    </h4>
+                                    <div id="map-jump-list" style="display:flex;flex-direction:column;gap:5px"><button
+                                            class="jump-btn" data-lat=".817" data-lng="-.833"
+                                            style="background:none;border:1px solid #444;color:#fff;padding:4px;font-size:10px;cursor:pointer">Vault
+                                            76</button><button class="jump-btn" data-lat=".627" data-lng="-.803"
+                                            style="background:none;border:1px solid #444;color:#fff;padding:4px;font-size:10px;cursor:pointer">Charleston</button><button
+                                            class="jump-btn" data-lat=".808" data-lng="-.704"
+                                            style="background:none;border:1px solid #444;color:#fff;padding:4px;font-size:10px;cursor:pointer">Morgantown</button><button
+                                            class="jump-btn" data-lat=".654" data-lng="-.659"
+                                            style="background:none;border:1px solid #444;color:#fff;padding:4px;font-size:10px;cursor:pointer">Whitespring</button><button
+                                            class="jump-btn" data-lat=".545" data-lng="-.580"
+                                            style="background:none;border:1px solid #444;color:#fff;padding:4px;font-size:10px;cursor:pointer">Watoga</button>
+                                    </div>
+                                </div>
+                                <div style="padding:10px">
+                                    <h4 style="color:var(--f76-yellow);font-size:12px;margin-bottom:10px">CATEGORIES
+                                    </h4>
+                                    <div id="map-category-list" style="display:flex;flex-direction:column;gap:2px">
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="db-map-container" style="flex:1;position:relative;cursor:grab;overflow:hidden">
+                            </div>
+                        </div>
+                        <div id="wishlist-container" class="custom-scroll"
+                            style="flex:1;background:rgba(0,0,0,.2);padding:15px;border:1px dashed rgba(255,255,255,.1);overflow-y:auto">
+                            <h4>WISHLIST</h4>
+                            <p style="color:#666;font-size:12px;margin-top:10px">Click ★ to track plans</p>
+                        </div>
+                    </div>
+                    <div id="db-stats-box"
+                        style="background:rgba(20,20,20,.9);border:1px solid var(--f76-yellow);padding:15px;width:400px;align-self:flex-end;margin-top:10px">
+                        <h4 id="db-item-name"
+                            style="color:var(--f76-yellow);border-bottom:1px solid rgba(255,255,255,.2);padding-bottom:5px;margin-bottom:10px">
+                            ITEM STATS</h4>
+                        <div style="display:flex;justify-content:space-between;margin-bottom:5px"><span
+                                style="color:#aaa">Value</span><span id="db-item-value"
+                                style="color:var(--f76-yellow)">--</span></div>
+                        <div style="display:flex;justify-content:space-between;margin-bottom:5px"><span
+                                style="color:#aaa">Weight</span><span id="db-item-weight"
+                                style="color:var(--f76-yellow)">--</span></div>
+                        <p id="db-item-desc" style="color:#ddd;font-size:14px;margin-top:10px;line-height:1.4">Select an
+                            item to view details.</p>
+                    </div>
+                </div>
+            </section>
+            <section class="config-section" id="experimental">
+                <div class="config-grid">
+                    <p style="padding:20px;color:#ff4444;font-size:14px">WARNING: THESE SETTINGS MAY CAUSE STABILITY
+                        ISSUES OR VISUAL GLITCHES.</p>
+
+                    <!-- Knowledge Base Content Moved Here -->
+                    <div style="grid-column: 1 / -1; margin-bottom: 20px;">
+                        <div style="background:rgba(225,176,0,.1);padding:15px;border:1px solid var(--f76-yellow);">
+                            <h3
+                                style="color:var(--f76-yellow);border-bottom:2px solid var(--f76-yellow);padding-bottom:5px;margin-bottom:10px">
+                                HIDDEN ENGINE SETTINGS (DATABASE)</h3>
+                            <p style="font-size:14px;line-height:1.4">This database contains thousands of hidden
+                                internal
+                                engine parameters. Use the search to find specific tweaks.</p>
+                            <div style="margin-top:15px;display:flex;gap:10px"><input type="text" id="settings-search"
+                                    placeholder="SEARCH SETTINGS (e.g. shadow, fov, memory)..."
+                                    style="flex-grow:1;background:rgba(0,0,0,.5);border:1px solid var(--f76-yellow);color:white;padding:10px;font-family:Rajdhani;font-size:16px"><button
+                                    id="search-btn" class="footer-btn"
+                                    style="background:var(--f76-yellow);color:#000">SCAN</button></div>
+                        </div>
+                        <div id="settings-search-results" class="custom-scroll"
+                            style="margin-top:10px;height:200px;overflow-y:auto;background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.1)">
+                            <div style="padding:40px;text-align:center;color:#666"><span
+                                    style="font-size:48px;display:block;margin-bottom:10px">🔍</span>Enter a keyword.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="toggle-item"><span>MAP MENU LAG FIX (PAUSE OPTIMIZATION)</span><input type="checkbox"
+                            id="map-menu-fix" class="mini-toggle" checked><label for="map-menu-fix"
+                            class="mini-toggle-label" data-on="ON" data-off="OFF"></label></div>
+                    <div class="toggle-item"><span>DISABLE GLOBAL ILLUMINATION (ENLIGHTEN)</span><input type="checkbox"
+                            id="disable-enlighten" class="mini-toggle" checked><label for="disable-enlighten"
+                            class="mini-toggle-label" data-on="ON" data-off="OFF"></label></div>
+                    <div class="toggle-item"><span>DEBUG: SHOW HIT VECTORS</span><input type="checkbox"
+                            id="show-hit-vector" class="mini-toggle"><label for="show-hit-vector"
+                            class="mini-toggle-label" data-on="ON" data-off="OFF"></label></div>
+                    <div class="toggle-item"><span>DEBUG: PING MONITOR</span><input type="checkbox" id="ping-monitor"
+                            class="mini-toggle"><label for="ping-monitor" class="mini-toggle-label" data-on="ON"
+                            data-off="OFF"></label></div>
+                    <div class="config-item"><label for="loading-fade-speed">LOADING SCREEN FADE SPEED</label>
+                        <div class="slider-container"><input type="range" id="loading-fade-speed" min=".1" max="2"
+                                step=".1" value=".5"><span class="slider-value">0.5s</span></div>
+                    </div>
+                    <div class="config-item"><label for="dir-shadow-dist">DIRECTIONAL SHADOW DISTANCE</label>
+                        <div class="slider-container"><input type="range" id="dir-shadow-dist" min="20000" max="150000"
+                                step="5000" value="60000"><span class="slider-value">60000</span></div>
+                    </div>
+                    <div class="toggle-item"><span>CLEAR WATER (REMOVE FOG)</span><input type="checkbox"
+                            id="clear-water" class="mini-toggle"><label for="clear-water" class="mini-toggle-label"
+                            data-on="ON" data-off="OFF"></label></div>
+                    <div class="toggle-item"><span>DISABLE GRASS (ESP MODE)</span><input type="checkbox"
+                            id="disable-grass" class="mini-toggle"><label for="disable-grass" class="mini-toggle-label"
+                            data-on="ON" data-off="OFF"></label></div>
+                </div>
+            </section>
+            <section class="config-section" id="presets">
+                <div class="config-grid">
+                    <div class="toggle-item preset-option" id="preset-potato" data-preset="potato"><span>[ POTATO ] -
+                            MINIMUM</span><span class="select-hint">SELECT</span></div>
+                    <div class="toggle-item preset-option" id="preset-medium" data-preset="medium"><span>[ MEDIUM ] -
+                            BALANCED</span><span class="select-hint">SELECT</span></div>
+                    <div class="toggle-item preset-option" id="preset-high" data-preset="high"><span>[ HIGH ] - HIGH
+                            QUALITY</span><span class="select-hint">SELECT</span></div>
+                    <div class="toggle-item preset-option" id="preset-ultra" data-preset="ultra"><span>[ ULTRA ] -
+                            MAXIMUM</span><span class="select-hint">SELECT</span></div>
+                </div>
+                <div id="preset-diff-display"
+                    style="margin-top:15px;padding:15px;background:rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.1);display:none;min-height:100px">
+                </div>
+            </section>
+            <section class="config-section" id="ini">
+                <div class="ini-output-container"><textarea id="config-output" readonly></textarea></div>
+            </section>
+        </main>
+    </div>
+    <div class="backend-status">
+        <div class="status-dot" id="backend-dot"></div><span id="backend-text">OFFLINE</span>
+    </div>
+    <div id="notification-container"></div>
+    <div class="bottom-bar">
+        <div class="footer-actions"><button class="footer-btn" id="save-btn"><span class="btn-key">S)</span> SAVE
+                CONFIG</button><button class="footer-btn" id="reset-btn"><span class="btn-key">R)</span> RESET
+                DEFAULTS</button><button class="footer-btn" id="launch-btn" style="color:var(--f76-yellow)"><span
+                    class="btn-key">X)</span> LAUNCH GAME</button></div>
+        <div class="atom-display"><span class="atom-icon">&#9883;</span><span id="atom-count">750</span></div>
+    </div>
+    <div id="path-overlay"
+        style="display:none;position:fixed;top:20px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.9);border:1px solid var(--f76-yellow);padding:10px 20px;z-index:2000;font-size:12px">
+        SAVED TO: <B id="saved-path"></B></div>
+
+    <!-- Save Confirmation Modal -->
+    <div id="save-confirm-modal" class="modal-overlay" style="display:none;">
+        <div class="modal-box">
+            <h2 class="modal-title">UNSAVED CHANGES</h2>
+            <div id="changes-list" class="changes-list custom-scroll">
+                <!-- Changes injected here -->
+            </div>
+            <div class="modal-actions">
+                <button id="modal-cancel">CANCEL</button>
+                <button id="modal-confirm">CONFIRM SAVE</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="js/main.js"></script>
+</body>
+
+</html>
