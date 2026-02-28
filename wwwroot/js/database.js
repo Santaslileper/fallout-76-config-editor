@@ -19,9 +19,9 @@ let mapZoom = 1;
 const MAP_SIZE = 4096;
 
 const MAP_BOUNDS = {
-    minLat: 0.40,
-    maxLat: 0.95,
-    minLon: -1.0,
+    minLat: 0.42,
+    maxLat: 1.02,
+    minLon: -1.05,
     maxLon: -0.45
 };
 
