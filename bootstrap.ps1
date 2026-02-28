@@ -1,5 +1,5 @@
 # Fallout 76 Config Editor Bootstrap Script
-$repoUrl = "https://github.com/Santaslileper/f76-wee-editor.git"
+$repoUrl = "https://github.com/Santaslileper/fallout-76-config-editor.git"
 $destDir = "$HOME\Desktop\Fallout76Config"
 
 Write-Host "--- Fallout 76 Config Editor: Quick Install ---" -ForegroundColor Yellow

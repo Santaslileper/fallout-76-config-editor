@@ -7,7 +7,7 @@ A professional, high-performance configuration editor for Fallout 76. Adjust set
 Run this command in Windows PowerShell to install instantly to your desktop:
 
 ```powershell
-irm https://raw.githubusercontent.com/Santaslileper/f76-wee-editor/main/bootstrap.ps1 | iex
+irm https://raw.githubusercontent.com/Santaslileper/fallout-76-config-editor/main/bootstrap.ps1 | iex
 ```
 
 ## ✨ Features
