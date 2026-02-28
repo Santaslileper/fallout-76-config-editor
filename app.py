@@ -60,9 +60,17 @@ def find_config_dir():
 GAME_CONFIG_DIR = find_config_dir()
 print(f"Final Configuration Directory: {GAME_CONFIG_DIR}")
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def serve_index():
+    if request.method == 'POST':
+        # Some browsers or plugins might try to POST to root; 
+        # just return the index to avoid 405 Method Not Allowed.
+        return send_from_directory('.', 'index.html')
     return send_from_directory('.', 'index.html')
+
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory('assets', 'favicon.png', mimetype='image/png')
 
 @app.route('/<path:path>')
 def serve_static(path):
