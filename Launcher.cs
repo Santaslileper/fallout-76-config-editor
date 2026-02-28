@@ -61,9 +61,9 @@ namespace Fallout76ConfigEditor {
         static void StartServer() {
             try {
                 listener = new HttpListener();
-                listener.Prefixes.Add("http://127.0.0.1:5000/");
+                listener.Prefixes.Add("http://localhost:5000/");
                 listener.Start();
-                Console.WriteLine("[OK] Server listening on http://127.0.0.1:5000/");
+                Console.WriteLine("[OK] Server listening on http://localhost:5000/");
 
                 new Thread(() => {
                     while (listener.IsListening) {
@@ -75,7 +75,7 @@ namespace Fallout76ConfigEditor {
                 }).Start();
 
                 Console.WriteLine("[INFO] Opening browser...");
-                Process.Start(new ProcessStartInfo("http://127.0.0.1:5000") { UseShellExecute = true });
+                Process.Start(new ProcessStartInfo("http://localhost:5000") { UseShellExecute = true });
                 
                 Console.WriteLine("--------------------------------------------------");
                 Console.WriteLine("Server is RUNNING. Close this window to stop.");
