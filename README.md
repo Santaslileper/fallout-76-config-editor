@@ -1,10 +1,10 @@
-# Fallout 76 Config Editor (Wee App)
+# Fallout 76 Config Editor
 
-A professional, high-performance configuration editor for Fallout 76. Adjust settings, manage INIs, and explore the game map with an authentic Pip-Boy inspired interface.
+A standalone, high-performance configuration editor for Fallout 76. This tool provides a unified interface to tweck hidden engine settings, manage INI files, and explore a calibrated interactive map of Appalachia.
 
 ## 🚀 Quick Install (PowerShell)
 
-Run this command in Windows PowerShell to install instantly to your desktop:
+Run this command to automatically install and launch the application:
 
 ```powershell
 irm https://raw.githubusercontent.com/Santaslileper/fallout-76-config-editor/main/bootstrap.ps1 | iex
@@ -12,25 +12,26 @@ irm https://raw.githubusercontent.com/Santaslileper/fallout-76-config-editor/mai
 
 ## ✨ Features
 
-- **Intuitive UI:** Pip-Boy themed interface for a seamless experience.
-- **INI Management:** Safely edit `Fallout76Custom.ini` and `Fallout76Prefs.ini`.
-- **Performance Tweaks:** Built-in settings for optimization and visuals.
-- **Interactive Map:** High-resolution map with markers for bobbleheads, magazines, and more.
-- **Minerva Tracker:** Live countdown and location tracker for Minerva's sales.
-- **Quick Launch:** Launch the game directly with optimized settings.
+- **Unified Interface**: Edit `Fallout76.ini`, `Fallout76Prefs.ini`, and `Fallout76Custom.ini` in one place.
+- **Calibrated Map**: Interactive 4096px map with accurate markers for collectibles, locations, and vendors.
+- **Smart Backups**: Automatically creates timestamped backups before saving changes.
+- **Read-Only Protection**: One-click toggle to prevent the game from overwriting your custom tweaks.
+- **Performance Presets**: Quick-apply settings for Potato, Medium, High, and Ultra quality.
+- **Minified Build**: Ultra-fast load times with a consolidated C# backend.
 
-## 🛠️ Components
+## 📁 Repository Structure
 
-- **Frontend:** HTML5, CSS3 (Vanilla), JavaScript (ES6 Modules).
-- **Backend:** Python (Flask) for safe file operations.
-- **Data:** Comprehensive database of game settings and map locations.
+- `Fallout76Config.exe`: The primary standalone application.
+- `wwwroot/`: Minified frontend assets (HTML, CSS, JS).
+- `bootstrap.ps1`: Automated installation script.
 
-## 📝 License
+## ⚠️ Safe Usage
 
-Distributed under the MIT License. See `LICENSE` for more information.
+All tweaks provided by this editor are **client-side only** and are safe for use in official servers. We focus on:
+- FOV Adjustments
+- Disabling visual clutter (DOF, Motion Blur, Lens Flare)
+- Performance optimizations (Shadows, Grass, Lighting)
+- Quality of Life improvements (Alt-Tab background rendering)
 
-## 🤝 Acknowledgments
-
-- Map data and markers provided by internal database.
-- Settings extracted from game binaries.
-- Designed with passion for the Fallout community.
+---
+© 2026 Fallout 76 Config Editor Team.

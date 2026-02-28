@@ -16,6 +16,20 @@ let selectedDbItem = null;
 let wishlist = [];
 let visibleCategories = new Set([49, 50, 70, 64, 63]);
 let mapZoom = 1;
+const MAP_SIZE = 4096;
+
+const MAP_BOUNDS = {
+    minLat: 0.40,
+    maxLat: 0.95,
+    minLon: -1.0,
+    maxLon: -0.45
+};
+
+function normalizeCoord(lat, lon) {
+    const x = (parseFloat(lon) - MAP_BOUNDS.minLon) / (MAP_BOUNDS.maxLon - MAP_BOUNDS.minLon);
+    const y = 1 - (parseFloat(lat) - MAP_BOUNDS.minLat) / (MAP_BOUNDS.maxLat - MAP_BOUNDS.minLat);
+    return { x, y };
+}
 
 export function startNewsTicker() {
     const atomCount = document.getElementById('atom-count');
@@ -116,19 +130,17 @@ window.centerMapOnLocation = function (name) {
 
 function centerMapOn(lat, lon) {
     const mapContainer = document.getElementById('db-map-container');
-    const mapInner = document.querySelector('.map-inner');
+    const mapInner = document.getElementById('map-inner');
     if (!mapContainer || !mapInner) return;
 
-    const xPercent = (parseFloat(lon) + 1) / 2;
-    const yPercent = (1 - parseFloat(lat)) / 2;
+    const coords = normalizeCoord(lat, lon);
 
-    const MAP_SIZE = 3000; // Match renderMap
-    const targetX = -(xPercent * MAP_SIZE - mapContainer.clientWidth / 2);
-    const targetY = -(yPercent * MAP_SIZE - mapContainer.clientHeight / 2);
+    mapInner.style.transition = 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
+    const targetX = -(coords.x * MAP_SIZE * mapZoom - mapContainer.clientWidth / 2);
+    const targetY = -(coords.y * MAP_SIZE * mapZoom - mapContainer.clientHeight / 2);
 
-    mapInner.style.transition = 'all 0.5s ease-out';
-    mapInner.style.left = Math.min(0, Math.max(-(MAP_SIZE - mapContainer.clientWidth), targetX)) + 'px';
-    mapInner.style.top = Math.min(0, Math.max(-(MAP_SIZE - mapContainer.clientHeight), targetY)) + 'px';
+    mapInner.style.left = targetX + 'px';
+    mapInner.style.top = targetY + 'px';
 
     setTimeout(() => { mapInner.style.transition = 'none'; }, 500);
 }
@@ -365,24 +377,7 @@ function initMapUI() {
 }
 
 function jumpTo(lat, lng) {
-    const mapInner = document.getElementById('map-inner');
-    const mapContainer = document.getElementById('db-map-container');
-    if (!mapInner || !mapContainer) return;
-
-    const MAP_SIZE = 4096;
-    const xPercent = (lng + 1) / 2;
-    const yPercent = (1 - lat) / 2;
-
-    const targetX = -(xPercent * MAP_SIZE - mapContainer.clientWidth / 2);
-    const targetY = -(yPercent * MAP_SIZE - mapContainer.clientHeight / 2);
-
-    mapInner.style.transition = 'all 0.5s ease-out';
-    mapInner.style.left = targetX + 'px';
-    mapInner.style.top = targetY + 'px';
-
-    setTimeout(() => {
-        mapInner.style.transition = '';
-    }, 500);
+    centerMapOn(lat, lng);
 }
 
 function renderMap() {
@@ -403,13 +398,14 @@ function renderMap() {
     mapInner.style.width = MAP_SIZE + 'px';
     mapInner.style.height = MAP_SIZE + 'px';
 
-    // Start centered on Vault 76 area or middle
-    mapInner.style.top = `-${MAP_SIZE * (1 - 0.817) / 2 - 250}px`;
-    mapInner.style.left = `-${MAP_SIZE * ((-0.833 + 1) / 2) - 400}px`;
+    const startCoords = normalizeCoord(0.817, -0.833); // Vault 76 center
+    mapInner.style.left = `-${(startCoords.x * MAP_SIZE) - mapContainer.clientWidth / 2}px`;
+    mapInner.style.top = `-${(startCoords.y * MAP_SIZE) - mapContainer.clientHeight / 2}px`;
 
     mapInner.style.backgroundImage = 'url("assets/map_highrez.jpg")';
-    mapInner.style.backgroundSize = 'cover';
-    mapInner.style.backgroundPosition = 'center';
+    mapInner.style.backgroundSize = '100% 100%';
+    mapInner.style.backgroundPosition = '0 0';
+    mapInner.style.backgroundRepeat = 'no-repeat';
     mapContainer.appendChild(mapInner);
 
     let isDragging = false;
@@ -450,19 +446,34 @@ function renderMap() {
     // Zoom logic
     mapContainer.onwheel = (e) => {
         e.preventDefault();
-        const delta = e.deltaY > 0 ? 0.9 : 1.1;
-        const newZoom = Math.min(2, Math.max(0.2, mapZoom * delta));
+        const delta = e.deltaY > 0 ? 0.8 : 1.25;
+        const oldZoom = mapZoom;
+        const newZoom = Math.min(4, Math.max(0.2, mapZoom * delta));
 
-        // Adjust scroll to zoom towards mouse position
+        if (oldZoom === newZoom) return;
+
         const rect = mapContainer.getBoundingClientRect();
         const mouseX = e.clientX - rect.left;
         const mouseY = e.clientY - rect.top;
 
-        // Simplified zoom (scale from center/mouse is harder with offset panning)
-        // Let's just scale the transform
+        const currentLeft = parseInt(mapInner.style.left) || 0;
+        const currentTop = parseInt(mapInner.style.top) || 0;
+
+        // Content coords relative to unpanned, zoomed map
+        const contentX = (mouseX - currentLeft) / oldZoom;
+        const contentY = (mouseY - currentTop) / oldZoom;
+
+        const newLeft = mouseX - contentX * newZoom;
+        const newTop = mouseY - contentY * newZoom;
+
         mapZoom = newZoom;
-        mapInner.style.transform = `scale(${mapZoom})`;
-        mapInner.style.transformOrigin = '0 0';
+
+        mapInner.style.width = (MAP_SIZE * mapZoom) + 'px';
+        mapInner.style.height = (MAP_SIZE * mapZoom) + 'px';
+        mapInner.style.left = newLeft + 'px';
+        mapInner.style.top = newTop + 'px';
+
+        updateMarkerScaling();
     };
 
     // Add markers
@@ -472,18 +483,21 @@ function renderMap() {
         const pin = document.createElement('div');
         pin.className = 'map-pin';
         pin.title = marker.title;
+        pin._data = marker; // For scaling
 
-        const xPercent = (parseFloat(marker.longitude) + 1) / 2;
-        const yPercent = (1 - parseFloat(marker.latitude)) / 2;
+        const coords = normalizeCoord(marker.latitude, marker.longitude);
 
-        const x = xPercent * MAP_SIZE;
-        const y = yPercent * MAP_SIZE;
+        const x = coords.x * MAP_SIZE * mapZoom;
+        const y = coords.y * MAP_SIZE * mapZoom;
 
         pin.style.left = x + 'px';
         pin.style.top = y + 'px';
         pin.style.position = 'absolute';
-        pin.style.width = '12px';
-        pin.style.height = '12px';
+
+        const baseSize = 12;
+        const scaledSize = Math.max(8, baseSize / Math.sqrt(mapZoom));
+        pin.style.width = scaledSize + 'px';
+        pin.style.height = scaledSize + 'px';
 
         // Colored based on categories
         let color = '#eee';
@@ -548,5 +562,32 @@ function renderMap() {
 
             mapInner.appendChild(mPin);
         }
+    }
+}
+
+function updateMarkerScaling() {
+    const pins = document.querySelectorAll('.map-pin');
+    const baseSize = 14;
+    const minSize = 6;
+    const scaledSize = Math.max(minSize, baseSize / Math.sqrt(mapZoom));
+    const MAP_SIZE = 4096;
+
+    pins.forEach(pin => {
+        pin.style.width = scaledSize + 'px';
+        pin.style.height = scaledSize + 'px';
+
+        const marker = pin._data;
+        if (marker) {
+            const coords = normalizeCoord(marker.latitude, marker.longitude);
+            pin.style.left = (coords.x * MAP_SIZE * mapZoom) + 'px';
+            pin.style.top = (coords.y * MAP_SIZE * mapZoom) + 'px';
+        }
+    });
+
+    const mPin = document.querySelector('.minerva-pin');
+    if (mPin) {
+        const mScaled = scaledSize * 2;
+        mPin.style.width = mScaled + 'px';
+        mPin.style.height = mScaled + 'px';
     }
 }
