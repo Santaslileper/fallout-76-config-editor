@@ -25,13 +25,9 @@ irm https://raw.githubusercontent.com/Santaslileper/fallout-76-config-editor/mai
 - `wwwroot/`: Minified frontend assets (HTML, CSS, JS).
 - `bootstrap.ps1`: Automated installation script.
 
-## ⚠️ Safe Usage
+## ⚖️ Disclaimer
 
-All tweaks provided by this editor are **client-side only** and are safe for use in official servers. We focus on:
-- FOV Adjustments
-- Disabling visual clutter (DOF, Motion Blur, Lens Flare)
-- Performance optimizations (Shadows, Grass, Lighting)
-- Quality of Life improvements (Alt-Tab background rendering)
+**USE AT YOUR OWN RISK.** This software is provided "as is" without any warranties. The developers take NO responsibility for any bans, game instability, data loss, or other issues that may arise from using this tool or modifying game files. By using this software, you acknowledge that you are responsible for any changes made to your game.
 
 ---
 © 2026 Fallout 76 Config Editor Team.

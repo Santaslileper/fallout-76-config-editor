@@ -1,6 +1,7 @@
 # Fallout 76 Safe Config Tweaks
 
-These settings are **CLIENT-SIDE ONLY** and will NOT get you banned.
+## ⚖️ Disclaimer
+**USE AT YOUR OWN RISK.** The developers take NO responsibility for any bans, performance issues, or game instability resulting from these tweaks. By applying these settings, you assume all risk.
 
 ---
 
